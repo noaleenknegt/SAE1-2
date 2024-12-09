@@ -59,10 +59,18 @@ public class Pauvocoder {
      * @return resampled wav
      */
     public static double[] resample(double[] inputWav, double freqScale) {
-        for (int i = 0; i < inputWav.length; i++) {
-
+        double tailleTab = ((inputWav.length)/freqScale);
+        double[] resampWav;
+        if(freqScale<1){
+        resampWav = new double[(int)tailleTab];
         }
-        return inputWav;
+        else{
+        resampWav = new double[(int)tailleTab+1];
+        }
+        for (int i = 0; i < tailleTab; i++) {
+            resampWav[i] = inputWav[(int)(i*freqScale)];
+        }
+        return resampWav;
     }
 
     /**
