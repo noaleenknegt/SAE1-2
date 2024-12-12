@@ -17,7 +17,6 @@ public class Pauvocoder {
             exit(1);
         }
 
-
         String wavInFile = args[0];
         double freqScale = Double.valueOf(args[1]);
         String outPutFile= wavInFile.split("\\.")[0] + "_" + freqScale +"_";
@@ -59,19 +58,25 @@ public class Pauvocoder {
      * @return resampled wav
      */
     public static double[] resample(double[] inputWav, double freqScale) {
-        double tailleTab = ((inputWav.length)/freqScale);
-        double[] resampWav;
-        if(freqScale<1){
-        resampWav = new double[(int)tailleTab];
+        long length = Math.round(inputWav.length * (1/freqScale));
+        double[] resampleWav = new double[(int)length];
+        int indexWav = 0;
+        if (freqScale > 1){
+            double index = 0;
+            double indexGap = (freqScale-1)/freqScale;
+            for (int i = 0; i < inputWav.length; i++){
+                index += indexGap;
+                if (index>=1) index--;
+                else{
+                    if (indexWav < resampleWav.length) {
+                        resampleWav[indexWav] = inputWav[i];
+                        indexWav++;
+                    }
+                }
+            }
+                System.out.println(indexWav + " " + inputWav.length);
         }
-        else{
-        resampWav = new double[(int)tailleTab+1];
-        }
-        for (int i = 0; i < tailleTab; i++) {
-            resampWav[i] = inputWav[(int)(i*freqScale)];
-
-        }
-        return resampWav;
+        return resampleWav;
     }
 
     /**
@@ -81,15 +86,7 @@ public class Pauvocoder {
      * @return dilated wav
      */
     public static double[] vocodeSimple(double[] inputWav, double dilatation) {
-        int newLength = (int) (inputWav.length * dilatation);
-        double[] outputWav = new double[newLength];
-
-    for (int i = 0; i < newLength; i++) {
-        int index = (int) (i / dilatation);
-        outputWav[i] = inputWav[index];
-    }
-
-    return outputWav;
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     /**
@@ -129,7 +126,6 @@ public class Pauvocoder {
      */
     public static double[] echo(double[] wav, double delay, double gain) {
         throw new UnsupportedOperationException("Not implemented yet");
-
     }
 
     /**
