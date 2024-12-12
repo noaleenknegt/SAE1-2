@@ -86,7 +86,15 @@ public class Pauvocoder {
      * @return dilated wav
      */
     public static double[] vocodeSimple(double[] inputWav, double dilatation) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        int newLength = (int) (inputWav.length * dilatation);
+        double[] outputWav = new double[newLength];
+
+    for (int i = 0; i < newLength; i++) {
+        int index = (int) (i / dilatation);
+        outputWav[i] = inputWav[index];
+    }
+
+    return outputWav;
     }
 
     /**
