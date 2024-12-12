@@ -60,15 +60,21 @@ public class Pauvocoder {
     public static double[] resample(double[] inputWav, double freqScale) {
         long length = Math.round(inputWav.length * (1/freqScale));
         double[] resampleWav = new double[(int)length];
+        int indexWav = 0;
         if (freqScale > 1){
-            int indexWav = 0;
             double index = 0;
-            double indexGap = (1-freqScale)/freqScale;
+            double indexGap = (freqScale-1)/freqScale;
             for (int i = 0; i < inputWav.length; i++){
                 index += indexGap;
-                if (index>1) index--;
-                else resampleWav[indexWav] = inputWav[i];
+                if (index>=1) index--;
+                else{
+                    if (indexWav < resampleWav.length) {
+                        resampleWav[indexWav] = inputWav[i];
+                        indexWav++;
+                    }
+                }
             }
+                System.out.println(indexWav + " " + inputWav.length);
         }
         return resampleWav;
     }
