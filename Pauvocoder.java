@@ -69,6 +69,7 @@ public class Pauvocoder {
         }
         for (int i = 0; i < tailleTab; i++) {
             resampWav[i] = inputWav[(int)(i*freqScale)];
+
         }
         return resampWav;
     }
@@ -80,7 +81,15 @@ public class Pauvocoder {
      * @return dilated wav
      */
     public static double[] vocodeSimple(double[] inputWav, double dilatation) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        int newLength = (int) (inputWav.length * dilatation);
+        double[] outputWav = new double[newLength];
+
+    for (int i = 0; i < newLength; i++) {
+        int index = (int) (i / dilatation);
+        outputWav[i] = inputWav[index];
+    }
+
+    return outputWav;
     }
 
     /**
@@ -120,6 +129,7 @@ public class Pauvocoder {
      */
     public static double[] echo(double[] wav, double delay, double gain) {
         throw new UnsupportedOperationException("Not implemented yet");
+
     }
 
     /**
