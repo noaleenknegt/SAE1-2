@@ -17,6 +17,7 @@ public class Pauvocoder {
             exit(1);
         }
 
+
         String wavInFile = args[0];
         double freqScale = Double.valueOf(args[1]);
         String outPutFile= wavInFile.split("\\.")[0] + "_" + freqScale +"_";
@@ -58,19 +59,19 @@ public class Pauvocoder {
      * @return resampled wav
      */
     public static double[] resample(double[] inputWav, double freqScale) {
-        long length = Math.round(inputWav.length * (1/freqScale));
-        double[] resampleWav = new double[(int)length];
-        if (freqScale > 1){
-            int indexWav = 0;
-            double index = 0;
-            double indexGap = (1-freqScale)/freqScale;
-            for (int i = 0; i < inputWav.length; i++){
-                index += indexGap;
-                if (index>1) index--;
-                else resampleWav[indexWav] = inputWav[i];
-            }
+        double tailleTab = ((inputWav.length)/freqScale);
+        double[] resampWav;
+        if(freqScale<1){
+        resampWav = new double[(int)tailleTab];
         }
-        return resampleWav;
+        else{
+        resampWav = new double[(int)tailleTab+1];
+        }
+        for (int i = 0; i < tailleTab; i++) {
+            resampWav[i] = inputWav[(int)(i*freqScale)];
+
+        }
+        return resampWav;
     }
 
     /**
@@ -80,7 +81,15 @@ public class Pauvocoder {
      * @return dilated wav
      */
     public static double[] vocodeSimple(double[] inputWav, double dilatation) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        int newLength = (int) (inputWav.length * dilatation);
+        double[] outputWav = new double[newLength];
+
+    for (int i = 0; i < newLength; i++) {
+        int index = (int) (i / dilatation);
+        outputWav[i] = inputWav[index];
+    }
+
+    return outputWav;
     }
 
     /**
@@ -120,6 +129,7 @@ public class Pauvocoder {
      */
     public static double[] echo(double[] wav, double delay, double gain) {
         throw new UnsupportedOperationException("Not implemented yet");
+
     }
 
     /**
